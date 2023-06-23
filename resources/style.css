@@ -1,0 +1,54 @@
+body {
+	max-width: 50%;
+	align-items: center;
+	margin: auto;
+	border: medium dashed #00F;
+	font-family: 'Roboto Mono', 'Courier New';
+}
+
+
+.calculator_screen {
+	border: medium solid #0FFF0F;
+}
+
+.calculator_screen--last {
+	font-size: 2rem;
+}
+
+.calculator_screen--current {
+	font-size: 3rem;
+}
+
+.calculator_buttons {
+	display: grid;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Copyright animations */
+
+a {
+	text-decoration: none;
+    padding: 0px 2px;
+    
+}
+.fab {
+    transition: transform 0.3s ease-in-out;
+}
+.fab:hover {
+    transform: rotate(360deg)scale(1.2);
+}
