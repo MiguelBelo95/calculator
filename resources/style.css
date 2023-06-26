@@ -1,54 +1,91 @@
 body {
 	max-width: 50%;
-	align-items: center;
 	margin: auto;
-	border: medium dashed #00F;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	font-family: 'Roboto Mono', 'Courier New';
 }
 
+/* TEXT DISPLAY */
 
-.calculator_screen {
+.presentation {
+	width: 400px;
+	margin: auto;
+	padding: 2rem;
+	text-align: center;
+}
+
+
+
+/* CALCULATOR */
+
+
+.calculator {
+	max-width: 400px;
+	margin: auto;
+	border: 2px solid #333;
+	border-radius: 15px;
+	padding: 1rem;
+}
+
+
+/* CALCULATOR  SCREEN */
+
+.calculator__screen {
 	border: medium solid #0FFF0F;
+	text-align: right;
+	border-radius: 15px;
 }
 
-.calculator_screen--last {
-	font-size: 2rem;
+
+.calculator__screen--last {
+	font-size: 1rem;
 }
 
-.calculator_screen--current {
-	font-size: 3rem;
+.calculator__screen--current {
+	font-size: 1.5rem;
+	border: medium dashed #3F3F3F;
+	padding-bottom: .75rem;
 }
 
-.calculator_buttons {
+
+
+
+/* CALCULATOR  BUTTONS */
+
+.calculator__buttons {
 	display: grid;
+	grid-template-rows: repeat(4, 1fr) ;
+	grid-template-columns: repeat(4, 1fr) ;
+	gap: 1rem;
+}
+
+.number--zero {
+	grid-row: 5;
+	grid-column: 1;
+	grid-column-end: span 2;
 }
 
 
+/* CALCULATOR COPYRIGHT ICONS */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Copyright animations */
+.calculator__copyright {
+	text-align: center;
+	padding: 1rem 0 0 0;
+	gap: 2rem;
+}
 
 a {
 	text-decoration: none;
-    padding: 0px 2px;
-    
+    padding: 0px 2px;    
 }
+
 .fab {
     transition: transform 0.3s ease-in-out;
 }
+
 .fab:hover {
     transform: rotate(360deg)scale(1.2);
 }
