@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./resources/style.css" />
-    <script src="./resources/logic.js"></script>
+    <script src="./resources/logic.js" defer></script>
     <link
       rel="icon"
       type="image/x-icon"
@@ -22,11 +22,11 @@
       <!-- SCREEN -->
       <div class="calculator__screen">
         <div class="calculator__screen--last">
-          <p>5*5</p>
+          <p id="screen--last">5*5</p>
         </div>
 
         <div class="calculator__screen--current">
-          <p>24</p>
+          <p id="screen--current">24</p>
         </div>
       </div>
 
