@@ -19,6 +19,14 @@ buttons.forEach( btn => {
 	btn.addEventListener("click", () => {
 		const btnText = btn.innerText;
 		
+		if (btn.classList.contains('delete')) {
+			
+		}
+
+		if (btn.classList.contains('all-clear')) {
+			clearAll();
+		}
+
 		// Check if the button clicked is a number
 		if (!isNaN(btnText) || btnText === '.') {
 			// Check if the operator has been selected
@@ -68,6 +76,11 @@ function updatedNum(btnText, num) {
 
 function updateScreen(btnText,screen) {
 	screen.innerText = btnText;
+}
+
+function updateLastScreen(secondNumber, operator, screen) {
+	let result = String(secondNumber).concat(" ", operator);
+	screen.innerText = result;
 }
 
 /* CALCULATOR OPERATIONS */
@@ -120,30 +133,19 @@ function operate(first, second, operator) {
 		default:
 			console.log('Invalid operator');
 	}
+	updateLastScreen(firstNum, operator, screenLast); 
 	firstNumber = total;
+	updateScreen(firstNumber,screenCurrent);
+}
+
+function clearAll() {
+	firstNumber = 0;
+	secondNumber = 0;
+	operator = '';
+	updateScreen(firstNumber,screenCurrent);
 	updateScreen(firstNumber,screenLast);
 }
 
-function clearAll() {}
-
-function display() {
-
-}
-
-/* LOGIC FOR NUMBERS
-
-On click: 
-	Register the number added;
-	Reject any operator besides "-"
-
-		if there was a number before, then append;
-			If operator, then append;
-				if another operator, replace operation;
-				if 
-
-
-
-*/
 
 
 
