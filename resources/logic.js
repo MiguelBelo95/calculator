@@ -20,7 +20,8 @@ buttons.forEach( btn => {
 		const btnText = btn.innerText;
 		
 		if (btn.classList.contains('delete')) {
-			
+			deleteLast();
+			updateScreen(firstNumber, screenCurrent);
 		}
 
 		if (btn.classList.contains('all-clear')) {
@@ -42,14 +43,14 @@ buttons.forEach( btn => {
 			}
 			}
 		  // Check if the button clicked is an operator
-		  else if (btn.classList.contains('operator')) {
+			else if (btn.classList.contains('operator')) {
 			if (secondNumber) {
 				console.log("IM herreeeeee!!!")
 				operate(firstNumber, secondNumber, operator);
 				secondNumber = 0;
 			}
 			operator = btnText;
-			screenCurrent.innerText = operator;
+			/* screenCurrent.innerText = operator; */
 		  }
 	  
 		  console.log('First Number:', firstNumber);
@@ -78,8 +79,8 @@ function updateScreen(btnText,screen) {
 	screen.innerText = btnText;
 }
 
-function updateLastScreen(secondNumber, operator, screen) {
-	let result = String(secondNumber).concat(" ", operator);
+function updateLastScreen(firstNum, secondNum, operator, screen) {
+	let result = String(firstNum).concat(" ", operator, " ", String(secondNum));
 	screen.innerText = result;
 }
 
@@ -133,7 +134,7 @@ function operate(first, second, operator) {
 		default:
 			console.log('Invalid operator');
 	}
-	updateLastScreen(firstNum, operator, screenLast); 
+	updateLastScreen(firstNum, secondNum, operator, screenLast); 
 	firstNumber = total;
 	updateScreen(firstNumber,screenCurrent);
 }
@@ -144,6 +145,14 @@ function clearAll() {
 	operator = '';
 	updateScreen(firstNumber,screenCurrent);
 	updateScreen(firstNumber,screenLast);
+}
+
+function deleteLast() {
+	firstNumber = screenCurrent.innerText.slice(0, -1);
+
+	if (firstNumber === '') {
+		firstNumber = 0;
+	}
 }
 
 
