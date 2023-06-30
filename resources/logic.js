@@ -112,23 +112,19 @@ function operate(first, second, operator) {
 	firstNum = parseFloat(first);
 	secondNum = parseFloat(second);
 	switch(operator) {
-		case 'X':
+		case 'x':
 			total = multiply(firstNum, secondNum);
 			break;
 		case '/':
-			// code block
 			total = divide(firstNum, secondNum);
 			break;
 		case '-':
-			// code block
 			total = subtract(firstNum, secondNum);
 			break;
 		case '+':
-			// code block
 			total = sum(firstNum, secondNum);
 			break;
 		case '%':
-			// code block
 			total = modulus(firstNum, secondNum);
 			break;
 		default:
