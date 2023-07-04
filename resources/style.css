@@ -52,6 +52,7 @@ body {
 .calculator__screen--current {
 	height: 40px;
   	font-size: 32px;
+	padding-bottom: 8px;
 }
 
 
@@ -132,10 +133,12 @@ a {
 
 	.presentation {
 		width: 50%;
+		padding: 0;
 	}
 
 
 	.calculator {
 		min-width: 200px;
+		margin-bottom: 2rem;
 	}
 }
