@@ -1,88 +1,120 @@
-let firstNumber = 0
-let secondNumber = 0
-let operator = ''
+let firstNumber = '0';
+let secondNumber = '0';
+let currentOperation = null;
+let shouldResetScreen = false;
 
-
-const screenLast = document.getElementById("screen--last")
-const screenCurrent = document.getElementById("screen--current")
-
-const buttons = document.querySelectorAll(".btn")
-
-screenCurrent.innerText = firstNumber
-screenLast.innerText = "Let's do some Maths"
-
+const numberBtns = document.querySelectorAll(".number");
+const operatorBtns = document.querySelectorAll(".operator");
+const dotBtn = document.querySelector(".btn.dot");
+const clearBtn = document.querySelector(".btn.all-clear");
+const deleteBtn = document.querySelector(".btn.delete");
+const equalsBtn = document.getElementById('equalsBtn');
+const screenLast = document.getElementById("screen--last");
+const screenCurrent = document.getElementById("screen--current");
 
 
 /* EVENTS */
 
-buttons.forEach( btn => {
-	btn.addEventListener("click", () => {
-		const btnText = btn.innerText;
-		
-		if (btn.classList.contains('delete')) {
-			deleteLast();
-			updateScreen(firstNumber, screenCurrent);
-		}
+window.addEventListener('keydown', handleKeyboardInput);
+equalsBtn.addEventListener('click', evaluate);
+deleteBtn.addEventListener('click', deleteNumber);
+dotBtn.addEventListener('click', appendPoint);
+clearBtn.addEventListener('click', clearAll);
 
-		if (btn.classList.contains('all-clear')) {
-			clearAll();
-		}
+numberBtns.forEach( btn => {
+	btn.addEventListener("click", () => appendNumber(btn.textContent));
+});
 
-		// Check if the button clicked is a number
-		if (!isNaN(btnText) || btnText === '.') {
-			// Check if the operator has been selected
-			if (operator === '') {
-			  // Add the clicked button text to the first number
-			  firstNumber = updatedNum(btnText, firstNumber);
-			  updateScreen(firstNumber, screenCurrent);
-			} else {
-			  // Add the clicked button text to the second number
-			  secondNumber = updatedNum(btnText, secondNumber);
-			  updateScreen(firstNumber, screenLast);
-			  updateScreen(secondNumber, screenCurrent);
-			}
-			}
-		  // Check if the button clicked is an operator
-			else if (btn.classList.contains('operator')) {
-			if (secondNumber) {
-				console.log("IM herreeeeee!!!")
-				operate(firstNumber, secondNumber, operator);
-				secondNumber = 0;
-			}
-			operator = btnText;
-			/* screenCurrent.innerText = operator; */
-		  }
-	  
-		  console.log('First Number:', firstNumber);
-		  console.log('Operator:', operator);
-		  console.log('Second Number:', secondNumber);
-		});
-})
+operatorBtns.forEach( btn =>
+	btn.addEventListener('click', () =>
+		setOperation(btn.value))
+)
 
-function updatedNum(btnText, num) {
-	// Add the clicked button text to the first number
-	if (btnText === '.' && !num.includes('.')) {
-		// Add decimal point only if it hasn't been added before
-		num += btnText;
-	  } else if (btnText !== '.') {
-		// Append the clicked number to the first number
-			if (num === 0) {
-				num = btnText;
-			} else {
-				num += btnText;
-			}
-		}
-	return num
+
+/* FUNCTIONS FOR EVENTS */
+
+function handleKeyboardInput(e) {
+	let key = e.key;
+	if (key >= 0 && key <= 9) appendNumber(key);
+	if (key === '.') appendPoint();
+	if (key ==='=' || key === 'Enter') evaluate();
+	if (key === 'Backspace') deleteNumber();
+	if (key === 'Escape') clearAll();
+	if (key === '+' || key === '-' || key === '*' || key === '/' || key === "%") {
+		setOperation(convertOperator(key));
+	};
 }
 
-function updateScreen(btnText,screen) {
-	screen.innerText = btnText;
+function convertOperator(keyboardOperator) {
+	if (keyboardOperator === '*') return 'x';
+	return keyboardOperator;
 }
 
-function updateLastScreen(firstNum, secondNum, operator, screen) {
-	let result = String(firstNum).concat(" ", operator, " ", String(secondNum));
-	screen.innerText = result;
+function appendNumber(num) {
+	if (screenCurrent.textContent === '0' || shouldResetScreen) {
+		resetScreen();
+	};
+	screenCurrent.textContent += num;
 }
+
+function appendPoint() {
+	if (shouldResetScreen) resetScreen();
+	if (screenCurrent === '') {
+		screenCurrent = '0'};
+	if (screenCurrent.textContent.includes('.')) return;
+	screenCurrent.textContent += '.';
+}
+
+function clearAll() {
+	screenCurrent.textContent = '0';
+	screenLast.textContent= '';
+	firstNumber = '';
+	secondNumber = '';
+	currentOperation = null;
+}
+
+function deleteNumber() {
+	console.log("IM HERE DELETE")
+	screenCurrent.textContent = screenCurrent.textContent.toString().slice(0, -1);
+}
+
+function resetScreen() {
+	screenCurrent.textContent = '';
+	shouldResetScreen = false;
+}
+
+
+/* MAIN FUNCTIONS */
+
+/* Sets [New Operator] and [First Number]. Calculates if Operator existed */
+function setOperation(operator) {
+	console.log(`BEFORE SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+	if (currentOperation !== null) evaluate();
+	firstNumber = screenCurrent.textContent;
+	currentOperation = operator;
+	screenLast.textContent = `${firstNumber} ${operator}`;
+	shouldResetScreen = true;
+	console.log(`AFTER SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+}
+
+/* Sets [Second Number] and Calculates */
+function evaluate() {
+	console.log(`BEFORE Evaluate FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+	if (currentOperation === null || shouldResetScreen) return;
+	if (currentOperation === '/' && screenCurrent.textContent === '0') {
+		alert('Can\´t divide by zero!')
+		return;
+	}
+	secondNumber = screenCurrent.textContent;
+	console.log(roundResult(operate(currentOperation, firstNumber, secondNumber)));
+	screenCurrent.textContent = roundResult(operate(currentOperation, firstNumber, secondNumber));
+	screenLast.textContent = `${firstNumber} ${currentOperation} ${secondNumber}=`
+	currentOperation = null;
+	console.log(`AFTER Evaluate FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+}
+
+
+
 
 /* CALCULATOR OPERATIONS */
 
@@ -106,51 +138,34 @@ function modulus(first, second) {
 	return first % second;
 }
 
-function operate(first, second, operator) {
-	/* takes an operator and 2 numbers and then calls one of the above functions on the numbers */
-	total = 0;
-	firstNum = parseFloat(first);
-	secondNum = parseFloat(second);
+function roundResult(num) {
+	console.log(`AFTER OPERATE FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+	console.log(`Number received: ${num}`)
+	return Math.round(num * 1000) / 1000;
+}
+
+
+/* Calculates */
+function operate(operator, first, second ) {
+	console.log(`BEFORE OPERATE FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
+	firstNum = Number(first);
+	secondNum = Number(second);
 	switch(operator) {
 		case 'x':
-			total = multiply(firstNum, secondNum);
-			break;
+			return multiply(firstNum, secondNum);
 		case '/':
-			total = divide(firstNum, secondNum);
-			break;
+			if (secondNum === 0) return null
+			else return divide(firstNum, secondNum);
 		case '-':
-			total = subtract(firstNum, secondNum);
-			break;
+			return subtract(firstNum, secondNum);
 		case '+':
-			total = sum(firstNum, secondNum);
-			break;
+			return sum(firstNum, secondNum);
 		case '%':
-			total = modulus(firstNum, secondNum);
-			break;
+			return modulus(firstNum, secondNum);
 		default:
-			console.log('Invalid operator');
-	}
-	updateLastScreen(firstNum, secondNum, operator, screenLast); 
-	firstNumber = total;
-	updateScreen(firstNumber,screenCurrent);
-}
-
-function clearAll() {
-	firstNumber = 0;
-	secondNumber = 0;
-	operator = '';
-	updateScreen(firstNumber,screenCurrent);
-	updateScreen(firstNumber,screenLast);
-}
-
-function deleteLast() {
-	firstNumber = screenCurrent.innerText.slice(0, -1);
-
-	if (firstNumber === '') {
-		firstNumber = 0;
+			return null;
 	}
 }
-
 
 
 
