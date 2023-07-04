@@ -36,23 +36,23 @@ body {
 /* CALCULATOR  SCREEN */
 
 .calculator__screen {
-	border: medium solid #0FFF0F;
+	min-height: 5rem;
 	text-align: right;
 	border-radius: 15px;
 	background-color: #eee;
 	margin-bottom: .75rem;
 }
 
-
 .calculator__screen--last {
-	font-size: 1rem;
+	height: 32px;
+  	font-size: 16px;
+	padding-top: 8px;
 }
 
 .calculator__screen--current {
-	font-size: 1.5rem;
-	border: medium dashed #3F3F3F;
+	height: 40px;
+  	font-size: 32px;
 }
-
 
 
 
