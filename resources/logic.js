@@ -158,6 +158,8 @@ function operate(operator, first, second ) {
 	switch(operator) {
 		case 'x':
 			return multiply(firstNum, secondNum);
+		case '*':
+			return multiply(firstNum, secondNum);
 		case '/':
 			if (secondNum === 0) return null
 			else return divide(firstNum, secondNum);
