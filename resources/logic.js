@@ -54,7 +54,7 @@ function appendNumber(num) {
 	if (screenCurrent.textContent === '0' || shouldResetScreen) {
 		resetScreen();
 	};
-	screenCurrent.textContent += num;
+	if (screenCurrent.textContent.length <= 10) screenCurrent.textContent += num;
 }
 
 function appendPoint() {
@@ -81,6 +81,7 @@ function deleteNumber() {
 function resetScreen() {
 	screenCurrent.textContent = '';
 	shouldResetScreen = false;
+	console.log("Im reseted everything BROOO!")
 }
 
 
@@ -89,11 +90,15 @@ function resetScreen() {
 /* Sets [New Operator] and [First Number]. Calculates if Operator existed */
 function setOperation(operator) {
 	console.log(`BEFORE SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
-	if (currentOperation !== null) evaluate();
+	if (currentOperation !== null ) evaluate();
+	if (operator === '=') {
+		currentOperation = null;
+		return;
+	};
 	firstNumber = screenCurrent.textContent;
 	currentOperation = operator;
 	screenLast.textContent = `${firstNumber} ${operator}`;
-	shouldResetScreen = true;
+	if (currentOperation !== '=')shouldResetScreen = true;
 	console.log(`AFTER SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 }
 
@@ -106,7 +111,6 @@ function evaluate() {
 		return;
 	}
 	secondNumber = screenCurrent.textContent;
-	console.log(roundResult(operate(currentOperation, firstNumber, secondNumber)));
 	screenCurrent.textContent = roundResult(operate(currentOperation, firstNumber, secondNumber));
 	screenLast.textContent = `${firstNumber} ${currentOperation} ${secondNumber}=`
 	currentOperation = null;
@@ -141,7 +145,8 @@ function modulus(first, second) {
 function roundResult(num) {
 	console.log(`AFTER OPERATE FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 	console.log(`Number received: ${num}`)
-	return Math.round(num * 1000) / 1000;
+	let result = Math.round(num * 1000) / 1000;
+	return result;
 }
 
 
