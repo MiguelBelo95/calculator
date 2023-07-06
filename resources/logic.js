@@ -2,6 +2,7 @@ let firstNumber = '0';
 let secondNumber = '0';
 let currentOperation = null;
 let shouldResetScreen = false;
+let activeButtonPressed = null;
 
 const numberBtns = document.querySelectorAll(".number");
 const operatorBtns = document.querySelectorAll(".operator");
@@ -35,6 +36,14 @@ operatorBtns.forEach( btn =>
 
 function handleKeyboardInput(e) {
 	let key = e.key;
+	activeButtonPressed = document.querySelector(`.btn[value="${key}"]`);
+	if (activeButtonPressed) {
+		activeButtonPressed.classList.add('active');
+		setTimeout(() => {
+			activeButtonPressed.classList.remove('active');
+		}, 100);
+	}
+
 	if (key >= 0 && key <= 9) appendNumber(key);
 	if (key === '.') appendPoint();
 	if (key ==='=' || key === 'Enter') evaluate();
@@ -43,6 +52,7 @@ function handleKeyboardInput(e) {
 	if (key === '+' || key === '-' || key === '*' || key === '/' || key === "%") {
 		setOperation(convertOperator(key));
 	};
+
 }
 
 function convertOperator(keyboardOperator) {
@@ -74,14 +84,12 @@ function clearAll() {
 }
 
 function deleteNumber() {
-	console.log("IM HERE DELETE")
 	screenCurrent.textContent = screenCurrent.textContent.toString().slice(0, -1);
 }
 
 function resetScreen() {
 	screenCurrent.textContent = '';
 	shouldResetScreen = false;
-	console.log("Im reseted everything BROOO!")
 }
 
 
@@ -89,7 +97,6 @@ function resetScreen() {
 
 /* Sets [New Operator] and [First Number]. Calculates if Operator existed */
 function setOperation(operator) {
-	console.log(`BEFORE SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 	if (currentOperation !== null ) evaluate();
 	if (operator === '=') {
 		currentOperation = null;
@@ -99,12 +106,10 @@ function setOperation(operator) {
 	currentOperation = operator;
 	screenLast.textContent = `${firstNumber} ${operator}`;
 	if (currentOperation !== '=')shouldResetScreen = true;
-	console.log(`AFTER SetOperation FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 }
 
 /* Sets [Second Number] and Calculates */
 function evaluate() {
-	console.log(`BEFORE Evaluate FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 	if (currentOperation === null || shouldResetScreen) return;
 	if (currentOperation === '/' && screenCurrent.textContent === '0') {
 		alert('Can\´t divide by zero!')
@@ -114,7 +119,6 @@ function evaluate() {
 	screenCurrent.textContent = roundResult(operate(currentOperation, firstNumber, secondNumber));
 	screenLast.textContent = `${firstNumber} ${currentOperation} ${secondNumber}=`
 	currentOperation = null;
-	console.log(`AFTER Evaluate FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 }
 
 
@@ -143,16 +147,12 @@ function modulus(first, second) {
 }
 
 function roundResult(num) {
-	console.log(`AFTER OPERATE FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
-	console.log(`Number received: ${num}`)
-	let result = Math.round(num * 1000) / 1000;
-	return result;
+	return Math.round(num * 1000) / 1000;
 }
 
 
 /* Calculates */
 function operate(operator, first, second ) {
-	console.log(`BEFORE OPERATE FT. Fnum: ${firstNumber} currentOP: ${currentOperation} secondNum: ${secondNumber}`)
 	firstNum = Number(first);
 	secondNum = Number(second);
 	switch(operator) {
